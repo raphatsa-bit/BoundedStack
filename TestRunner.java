@@ -51,24 +51,23 @@ public class TestRunner {
             System.exit(1);
     }
     }
-    //
-    private static void test_Exposure() {
+    private static void test_Creators() {
         System.out.println("___CREATORS___");
-        BoundedStack empty = new BoundedStack(failed_test);
+        BoundedStack empty = new BoundedStack();
         check("new[]_empty", empty.size()==0);
-        check("new[]_contains are nothing", !empty.contains("anything else"));
+        check("new[]_contains are nothing", !empty.contains("anything_else"));
 
-        BoundedStack b = new BoundedStack(Arrays.asList("A", "B", "C"));
-        check("new(list) -> size 3", b.size() == 3);
-        check("new(list) -> contains B", b.contains("B"));
-        check("new(list) -> preserves order",
-                b.queue().equals(Arrays.asList("A", "B", "C")));
+        BoundedStack b = new BoundedStack(Arrays.asList("A", "B", "C","D","E"));
+        check("list_new size 5", b.size() == 5);
+        check("list_new contains B", b.contains("B"));
+        check("list_new Preserves Order",
+                b.queue().equals(Arrays.asList("A", "B", "C","D","E")));
 
         // boundary: list ว่างคือขอบล่างที่ถูกต้อง
         BoundedStack fromEmpty = new BoundedStack(new ArrayList<String>());
         check("new(empty list) -> empty", fromEmpty.size() == 0);
 
-        // input ที่ผิดเงื่อนไขต้องโยน exception ไม่ใช่ปล่อยผ่าน
+        // input ที่ผิดเงื่อนไขต้องโยน exception ห้ามปล่อยผ่านไป
         boolean threwDup = false;
         try {
             new BoundedStack(Arrays.asList("A", "A"));
@@ -94,6 +93,10 @@ public class TestRunner {
         check("new(null) -> throws IllegalArgumentException", threwNullList);
     
     }
+    //
+    private static void test_Exposure() {
+        
+    }
     private static void test_Producer() {
         
     }
@@ -104,9 +107,6 @@ public class TestRunner {
         
     }
     private static void test_Add() {
-    
-    }
-    private static void test_Creators() {
     
     }
 }
