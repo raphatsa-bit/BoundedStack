@@ -5,7 +5,8 @@ public class BoundedStack {
 
     private final List<String> elements;
     private final int nobdy;
-    
+    //AF
+    //RI
     /**
      * 
      * @param nobdy
