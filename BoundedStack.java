@@ -67,7 +67,7 @@ public class BoundedStack {
      *
      * ระวัง: ห้ามเก็บ reference ของ initial ตรง ๆ (rep exposure!)
      *
-     * @param initial รายชื่อเพลงเริ่มต้น ต้องไม่ซ้ำและไม่เกิน MAX_SONGS
+     * @param Customer รายชื่อเพลงเริ่มต้น ต้องไม่ซ้ำและไม่เกิน MAX_Queue
      * @throws IllegalArgumentException ถ้า initial ผิดเงื่อนไข
      */
     public BoundedStack(List<String> Customer) {
@@ -80,10 +80,8 @@ public class BoundedStack {
             if(s=="") throw new IllegalArgumentException();
             if(!seen.add(s)) throw new IllegalArgumentException();
         }
-        //this.songs = intitial;
         this.queue = new ArrayList<>(Customer) ;
         checkRep();
-        // เขียนโค้ดตรงนี้
     }
 
 
@@ -112,6 +110,11 @@ public class BoundedStack {
     
     public String toString() {
         return queue.toString();
+    }
+
+
+    public Object queue() {
+        
     }
 
 
