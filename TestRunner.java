@@ -145,11 +145,14 @@ public class TestRunner {
         check("List_size reports 10", s.size() == 10);
         check("List_contains finds an existing queue", s.contains("5"));
         check("List_contains rejects a missing queue", !s.contains("20"));
-        check("queue returns the full list in order",
+        check("List_queue returns the full list in order",
         s.queue().equals(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")));
-        BoundedStack emptyIntStack = new BoundedStack(Arrays.asList());
-
-       
+        //เช็คว่าเรียกใช้size มันจะแก้ข้อมูลในลิสต์มั้ย 
+        check("Calling size does not change the list",
+        s.size() == 10 && s.queue().equals(Arrays.asList( "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")));
+        //เช็คว่าเรียกใช้contains แค่ค้นหาข้อมูลจริงๆและไม่กระทบต่อข้อมูลภายในลิสต์ 
+        check("Calling contains does not change the list", s.contains("8") &&
+        s.queue().equals(Arrays.asList( "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")));
     }
     private static void TR_Mutator_Add() {
     
