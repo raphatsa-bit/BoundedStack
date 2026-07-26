@@ -17,7 +17,7 @@ import java.util.Set;
 public class BoundedStack {
   // ===== representation =====
     private final List<String> queue ;
-    public final int MAX_Queue =100;
+    public final int MAX_QUEUE =100;
     // TODO 1: เขียน Abstraction Function ตรงนี้
     // Abstraction Function:
     //   AF(queue = QueueTicketบัตรคิวตั้งแต่0-100
@@ -27,7 +27,7 @@ public class BoundedStack {
     //ไม่มีบัตรคิวใดเป็น null
     //ไม่มีชื่อบัตรคิวที่เป็นสตริงว่าง
     //ชื่อบัตรคิวห้ามซ้ำกัน
-    //  มีได้ไม่เกิน MAX_Queue (100) บัตรคิว
+    //  มีได้ไม่เกิน MAX_QUEUE (100) บัตรคิว
 
     // TODO 3: เขียน Safety from rep exposure ตรงนี้ 
     // Safety from rep exposure:    
@@ -41,7 +41,7 @@ public class BoundedStack {
      */
     private void checkRep() {
         assert queue != null : "queue is not null";
-        assert queue.size() <= MAX_Queue ;
+        assert queue.size() <= MAX_QUEUE ;
         Set<String> seen = new HashSet<>();
         for (String s : queue) {
             assert s != null ;
@@ -56,12 +56,12 @@ public class BoundedStack {
     /**
      * สร้างคิวว่าง
      */
-    public QueueTicket() { 
+    public BoundedStack() { 
         this.queue = new ArrayList<>();
         checkRep();
     }
 
-    /**
+     /**
      * TODO 5: Creator ตัวที่สอง
      * สร้างเพลย์ลิสต์จากรายชื่อเพลงที่ให้มา
      *
@@ -70,20 +70,50 @@ public class BoundedStack {
      * @param initial รายชื่อเพลงเริ่มต้น ต้องไม่ซ้ำและไม่เกิน MAX_SONGS
      * @throws IllegalArgumentException ถ้า initial ผิดเงื่อนไข
      */
-    public BoundedStack(int nobdy){
+    public BoundedStack(List<String> Customer) {
 
-        this.MAX_Queue = new ArrayList<>();
-        this.queue = nobdy;
-
+        if(Customer == null) throw new IllegalArgumentException() ;
+        if(Customer.size() > MAX_QUEUE)  throw new IllegalArgumentException() ;
+        Set<String> seen = new HashSet<>();
+        for(String s : Customer){
+            if(s==null) throw new IllegalArgumentException() ;
+            if(s=="") throw new IllegalArgumentException();
+            if(!seen.add(s)) throw new IllegalArgumentException();
+        }
+        //this.songs = intitial;
+        this.queue = new ArrayList<>(Customer) ;
+        checkRep();
+        // เขียนโค้ดตรงนี้
     }
-    
+
+
     /**
      * 
      * @param r
      */
-    public void push(String r){
+     public boolean add(String ticket) {
+        if(ticket == null || ticket == "") throw new IllegalArgumentException();
+        if(queue.contains(ticket) || queue.size()==MAX_QUEUE) return false ;
+        queue.add(ticket);
+        checkRep();
+        return true;
+    }
 
 
+
+   public int size() {
+        return queue.size();  
+    }
+
+
+    public boolean contains(String string) {
+         return queue.contains(queue);  
     }
     
+    public String toString() {
+        return queue.toString();
+    }
+
+
+  
 }
