@@ -41,7 +41,7 @@ public class BoundedStack {
         Set<String> seen = new HashSet<>();
         for (String s : queue) {
             assert s != null : "ticket is null";
-            assert s != "" : "ticket is empty";
+            assert !s.isEmpty() : "ticket is empty";
             assert seen.add(s) : "duplicate ticket";
 } 
         }
@@ -70,12 +70,11 @@ public class BoundedStack {
         if(customer == null) throw new IllegalArgumentException() ;
         if(customer.size() > MAX_QUEUE)  throw new IllegalArgumentException() ;
         Set<String> seen = new HashSet<>();
-        for(String s : customer){
-            if(s==null) throw new IllegalArgumentException() ;
-            if(s=="") throw new IllegalArgumentException();
-            if(!seen.add(s)) throw new IllegalArgumentException();
+    for(String s : customer){
+            if(s == null) throw new IllegalArgumentException("Ticket is null");
+            if(s.isEmpty()) throw new IllegalArgumentException("Ticket is empty");
+            if(!seen.add(s)) throw new IllegalArgumentException("Duplicate ticket");
         }
-         
         this.queue = new ArrayList<>(customer) ;
         checkRep();
     }
@@ -88,9 +87,9 @@ public class BoundedStack {
      * @return true ถ้าเพิ่มสำเร็จ, false ถ้ามีบัตรคิวนี้อยู่แล้วหรือเต็มแล้ว
      * @throws IllegalArgumentException ถ้า ticket เป็น null หรือสตริงว่าง
      */
-     public boolean add(String ticket) {
-        if(ticket == null || ticket == "") throw new IllegalArgumentException();
-        if(queue.contains(ticket) || queue.size()==MAX_QUEUE) return false ;
+    public boolean add(String ticket) {
+        if(ticket == null || ticket.isEmpty()) throw new IllegalArgumentException("Invalid ticket");
+        if(queue.contains(ticket) || queue.size() == MAX_QUEUE) return false;
         queue.add(ticket);
         checkRep();
         return true;
