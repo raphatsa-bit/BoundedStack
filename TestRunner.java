@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+//6721651734 นายรภัสสา เผ่ามา ทำเทส
  /** 
  * TestRunner สำหรับทดลองและตรวจสอบและทดลองเพื่อหาข้อผิดพลาดของโปรแกรมลิสต์บัตรคิวรถ
  */
@@ -14,8 +14,8 @@ public class TestRunner {
     /** 
      * Helper หลักที่จะแสดงค่าว่า ผ่านหรือไม่และให้นับผลรวมไปในตัวเอง
      */
-    private static void check(String n,Boolean condition){
-        if (condition) {
+    private static void check(String n,Boolean Condition){
+        if (Condition) {
             pass_test++;
             System.out.println("[PASS_TEST] " + n);
         } else {
@@ -27,11 +27,11 @@ public class TestRunner {
  public static void main(String[] args){
         boolean AWS = false;
         assert AWS = true;
-        if (!AWS) {
-                System.out.println("assertions disabled"
-                        + " - re-run with: java -ea TestRunner\n");
+        if (!AWS) {System.out.println("assertions disabled"
+            + " - re-run with: java -ea TestRunner\n");
         }
         System.out.println("___QueueTicket_Number_list_Test___\n");
+        
         TR_Creators();
         TR_Producer();
         TR_Observers();
@@ -39,7 +39,7 @@ public class TestRunner {
         TR_Mutator_Delete();
         TR_Exposure();
 
-        System.out.println("\n___SMMARY___");
+        System.out.println("\n___SUMMARY___");
         System.out.println("All_Passed: " + pass_test);
         System.out.println("All_Failed: " + failed_test);
         System.out.println("Total : " + (pass_test + failed_test));
@@ -110,12 +110,12 @@ public class TestRunner {
         //ตรวจสอบว่าลิสต์ที่สร้างขึ้นมาใหม่มี จำนวนสมาชิก = ลิสต์เดิมมั้ย
         check("ST(shuffled ticket) has the same size", ST.size() == OG.size());
 
-        List<String> xList = new ArrayList<String>(OG.queue());
-        List<String> yList = new ArrayList<String>(ST.queue());
-        Collections.sort(xList);
-        Collections.sort(yList);
+        List<String> x_List = new ArrayList<String>(OG.queue());
+        List<String> y_List = new ArrayList<String>(ST.queue());
+        Collections.sort(x_List);
+        Collections.sort(y_List);
         //เช็คว่าสมาชิกข้างในครบถ้วนเหมือนเดิมไหมหลังจากเรียงลำดับคิว
-        check("ST(shuffled ticket) contains exactly the same queue", xList.equals(yList));
+        check("ST(shuffled ticket) contains exactly the same queue", x_List.equals(y_List));
         //เช็คว่าไม่ได้ไปแก้ไขข้อมูลต้นฉบับ
         check("ST(shuffled ticket) not mutate the original",
                 OG.queue().equals(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
@@ -148,20 +148,90 @@ public class TestRunner {
         check("List_queue returns the full list in order",
         s.queue().equals(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")));
         //เช็คว่าเรียกใช้size มันจะแก้ข้อมูลในลิสต์มั้ย 
-        check("Calling size does not change the list",
+        check("List_Calling size does not change the list",
         s.size() == 10 && s.queue().equals(Arrays.asList( "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")));
         //เช็คว่าเรียกใช้contains แค่ค้นหาข้อมูลจริงๆและไม่กระทบต่อข้อมูลภายในลิสต์ 
-        check("Calling contains does not change the list", s.contains("8") &&
+        check("List_Calling contains does not change the list", s.contains("8") &&
         s.queue().equals(Arrays.asList( "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")));
     }
+    //ลองเพิ่มข้อมูลแต่ลำดับต้องไม่พังกับตอนที่ได้คิวซ้ำต้องลิสต์ไม่พัง
     private static void TR_Mutator_Add() {
-    
+        System.out.println("\n___Mutator_Add___");
+        //เวลาเพิ่มคิว คิวต้องถูกเพิ่มและขนาดต้องเพิ่มด้วยและก็ถูกค้นหาได้
+        BoundedStack s = new BoundedStack();
+        check("List_Add_(1) must returns true", s.add("1"));
+        check("List_Add_(1) size = 1", s.size() == 1);
+        check("List_Add_(1) must found in contains", s.contains("1"));
+        //ตอนเพิ่มคิวเข้ามาจะเรียงลำดับก่อนค่อยเพื่ม
+        s.add("2");
+        s.add("3");
+        s.add("4");
+        s.add("5");
+        check("List_Add keeps the order when adds queue",
+        s.queue().equals(Arrays.asList("1","2","3","4","5")));
+        //ตอนใส่คิวที่ซ้ำเข้ามาต้องไม่เป็นไร
+        check("List_Add Duplicate returns false", !s.add("1"));
+        check("List_Add fail add but stays the same", s.size() == 5);
+        //เวลาinput อะไรแปลกๆที่รับไม่ได้ก็ให้โยน exception
+        //ตอนใส่ค่าว่าง
+        try {
+            s.add("");
+            check("List_Add emty throw exceptions", false); 
+        } catch (IllegalArgumentException e) {
+            check("List_Add emty throw exceptions", true);
+        }
+        //ตอนไม่ใส่อะไรเลย
+        try {
+            s.add(null);
+            check("List_Add null throw exceptions", false);
+        } catch (IllegalArgumentException e) {
+            check("List_Add null throw exceptions", true);
+        }
     }
-    
+    //ลบคิวที่มีอยู่จริงและคิวที่ไม่มีจริว
     private static void TR_Mutator_Delete() {
+        System.out.println("\n___Remove___");
         
+        BoundedStack ticket = new BoundedStack(Arrays.asList("21","22","23","24"));
+        //ลบคิวจากที่มีอยู่ในลิสต์
+        boolean Delete = ticket.remove("22");
+        List<String> Lticket = Arrays.asList("21","23","24");
+        check("List_remove returns ture", Delete);
+        check("List_remove size-1", ticket.size() == 3);
+        check("List_remove 22 is gone", !ticket.contains("22"));
+        check("List_remove same oder", ticket.queue().equals(Lticket));
+        //ลบคิวเดิมซ้ำๆต้องไม่มีไรเปลี่ยน
+        ticket.remove("22");
+        boolean Again = ticket.remove("22");
+        check("List_remove returns false", !Again);
+        check("List_remove NothingChange", ticket.size() == 3);
+        //ลบคิวที่ไม่ได้มีอยู่ในลสตืจริงๆ
+        boolean Somethingwrong = ticket.remove("Nothing");
+        check("List_remove returns flase",!Somethingwrong);
+        check("List_remove NothingChange", ticket.size() == 3);
+        //ลองลบค่าว่าง
+        boolean Null = ticket.remove(null);
+        check("List_remove Null returns false", !Null);
+        check("List_remove NothingChange", ticket.size() == 3);
     }
+    //ลองหาว่าจะไม่เป็น representation exposure 
     private static void TR_Exposure() {
-        
-    }
+        System.out.println("\n___Exposure___");
+        //แก้ไข List ที่ส่งกลับมาจาก queue() ต้องไม่กระทบข้างใน BoundedStack
+        BoundedStack Queue = new BoundedStack();
+        Queue.add("1");
+        Queue.queue().clear();
+        Queue.queue().add("injected");
+        check("List_Ex creates a new copy every time", Queue.queue() != Queue.queue());
+        check("List_Ex Changing the output (queue()) won't change the actual BoundedStack", 
+        Queue.size() == 1 && !Queue.contains("injected"));
+
+        //แก้ List ต้นทางที่ส่งเข้า Constructor ต้องไม่กระทบข้างใน BoundedStack
+        List<String> ticket = new ArrayList<>(Arrays.asList("1", "2"));
+        BoundedStack copyQueue = new BoundedStack(ticket);
+        ticket.clear();
+        ticket.add("injected");
+        check("List_Ex Changes to the input data won't affect the created BoundedStack", 
+        copyQueue.size() == 2 && !copyQueue.contains("injected"));
+        }
 }

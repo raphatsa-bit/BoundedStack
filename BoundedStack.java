@@ -18,7 +18,7 @@ import java.util.Set;
 public class BoundedStack {
   // ===== representation =====
     private final List<String> queue ;
-    public final int MAX_Queue =100;
+    public final static int MAX_Queue =100;
     // Abstraction Function:
     //   AF(queue = QueueTicketบัตรคิวตั้งแต่0-100
 
