@@ -114,7 +114,7 @@ public class BoundedStack {
      * 
      * @return จำนวนคิวในลิสต์
      */
-   public int size() {
+    public int size() {
         return queue.size();  
     }
     /**
@@ -126,9 +126,7 @@ public class BoundedStack {
          return queue.contains(ticket);  
     }
     /**
-     * คืนรายชื่อเพลงทั้งหมดตามลำดับ
-     *
-     * ระวัง: ห้ามคืน reference ของ songs ตรง ๆ (rep exposure!)
+     * @return คืนรายชื่อเพลงทั้งหมดตามลำดับ
      */
     public List<String> queue(){
         return new ArrayList<>(queue);   // แก้บรรทัดนี้
@@ -136,10 +134,10 @@ public class BoundedStack {
     // ===== Producer =====
 
     /**
-     *คืนเพลย์ลิสต์ใหม่ที่มีเพลงเดียวกันแต่สลับลำดับ
+     *คืนลิสต์ใหม่ที่มีคิว(เจ้าของคิว)เดียวกันแต่สลับลำดับที่
      * @return คิวใหม่ที่ทำการเปลี่ยนลำดับที่แล้ว
      */
-    public BoundedStack shuffled() {
+    public BoundedStack ST() {
         List<String> copy = new ArrayList<>(queue);
         Collections.shuffle(copy);
         return new BoundedStack(copy);  
